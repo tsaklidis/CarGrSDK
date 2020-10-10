@@ -5,6 +5,13 @@ from sdk.base import CarGrSDK
 # provided at settings/local.py
 client = CarGrSDK()
 
-# Get the loged in user data
-print(f'Phone: {client.user.phone}')
-print(f'Post Code: {client.user.post_code}')
+# Get the logged in user data
+
+info = client.user.get_personal_info()
+print(info)
+
+info['first_name'] = 'Stefanos'
+info['country_code'] = 'gr'
+
+ans = client.user.update_info(info)
+print(ans)
