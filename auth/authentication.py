@@ -9,6 +9,25 @@ from endpoints import links
 class Authentication:
     credentials = None
 
+    def check_credentials(self):
+        '''
+        Check if user has provided and filled the credentials
+        :return: None on success
+        :raises: NotConfigured exception
+        '''
+        try:
+            self.credentials = settings.credentials
+            username = self.credentials.get('username')
+            password = self.credentials.get('password')
+            if username and password:
+                return None
+            else:
+                raise errors.NotConfigured('Provide non empty username and '
+                                           'password at settings/local.py')
+        except AttributeError:
+            raise errors.NotConfigured('Credentials not provided at '
+                                       'settings/local.py')
+
     def login(self):
         '''
         Perform login and keep the cookies for further requests
@@ -23,9 +42,5 @@ class Authentication:
 
 
     def __init__(self):
-        try:
-            self.credentials = settings.credentials
-            self.login()
-        except AttributeError:
-            raise errors.NotConfigured('Credentials not provided at '
-                                       'settings/local.py')
+        self.check_credentials()
+        self.login()
