@@ -1,5 +1,5 @@
 ### Car.gr SDK
-#### This is an experiment for on automations on car.gr site
+#### This is an experiment for automations on car.gr site
 ##### Working on free time so... follow for new updates
 <hr>
 
