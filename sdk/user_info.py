@@ -1,3 +1,4 @@
+from bs4 import BeautifulSoup
 from endpoints import links
 from sdk.helpers import send_request, get_value_by_id, get_value_by_name, get_text_from_element
 from sdk.errors import HtmlValueNotFound
@@ -53,6 +54,25 @@ class User:
             'last_name': self.l_name,
             'postcode': self.postcode
         }
+
+
+    def get_ads_titles(self):
+        ans =  send_request('GET', links.my_ads)
+        soup = BeautifulSoup(ans.text, "html.parser")
+
+        try:
+            titles = soup.find_all("div", {"class": "title font-size-xl"})
+            all_titles = []
+
+            for item in titles:
+                title = item.attrs.get('title')
+                if title not in all_titles:
+                    all_titles.append(title)
+
+            return all_titles
+        except Exception as e:
+            raise HtmlValueNotFound(f'Value not found{e}')
+
 
     def __init__(self):
         self.ans = send_request('GET', links.control_panel)

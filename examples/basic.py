@@ -15,3 +15,6 @@ info['country_code'] = 'gr'
 
 ans = client.user.update_info(info)
 print(ans)
+
+ans = client.user.get_ads_titles()
+print(ans)
