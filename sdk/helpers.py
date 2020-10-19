@@ -1,23 +1,30 @@
 from bs4 import BeautifulSoup
+
+import logging
 import requests
 
 import settings
 from sdk.errors import *
 
+def send_request(method, url, extra_headers=None, params=None, body=None,
+                 cookies=None, return_json=False, convert_to_json=True):
 
-def send_request(method, url, extra_headers=None, params=None,
-                 body=None, return_json=False, convert_to_json=True):
+    if settings.debug:
+        logging.basicConfig(level=logging.DEBUG)
 
     s = requests.Session()
     final_headers = settings.main_hdrs
+
+    if not cookies:
+        cookies = settings.cookies
 
     if extra_headers:
         final_headers.update(extra_headers)
 
     if method == 'GET':
-        ans = s.get(url, params=params, headers=final_headers, cookies=settings.cookies)
+        ans = s.get(url, params=params, headers=final_headers, cookies=cookies)
     elif method == 'POST':
-        ans = s.post(url, data=body, cookies=settings.cookies)
+        ans = s.post(url, data=body, cookies=cookies)
     # elif method == 'DELETE':
     #     ans = requests.delete(url, data=body, headers=final_headers)
     # elif method == 'PATCH':
@@ -51,4 +58,4 @@ def get_value_by_name(html, name, html_tag):
 def get_text_from_element(html, cls, html_tag, id_or_cls, recursive=False):
     soup = BeautifulSoup(html, "html.parser")
     tag = soup.find(html_tag, {id_or_cls: cls})
-    return tag.text
+    return tag.text if tag else None

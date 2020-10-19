@@ -1,2 +1,3 @@
 credentials = {'username': '', 'password': ''}
 cookies = None
+debug = True # Use for debugging, default is False
