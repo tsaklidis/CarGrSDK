@@ -8,6 +8,7 @@ try:
     main_hdrs = {
         'User-Agent': 'CarGrSDK v1.0',
     }
+    debug = False
 except ImportError as e:
     ans = input('local.py not found. Create with default values? y/n: ')
     if ans in ['y', 'Y', '']:

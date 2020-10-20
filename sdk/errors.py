@@ -21,8 +21,16 @@ class LoginFailed(BaseException):
     def __init__(self, *args, **kwargs):
         super(LoginFailed, self).__init__(*args, **kwargs)
 
+
 class HtmlValueNotFound(BaseException):
     message = 'The value you requested was not found'
 
     def __init__(self, *args, **kwargs):
         super(HtmlValueNotFound, self).__init__(*args, **kwargs)
+
+
+class CookieError(BaseException):
+    message = 'Bad Cookie or not found'
+
+    def __init__(self, *args, **kwargs):
+        super(CookieError, self).__init__(*args, **kwargs)

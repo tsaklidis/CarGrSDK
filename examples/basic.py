@@ -10,11 +10,11 @@ client = CarGrSDK()
 info = client.user.get_personal_info()
 print(info)
 
-info['first_name'] = 'Stefanos'
-info['country_code'] = 'gr'
-
-ans = client.user.update_info(info)
-print(ans)
-
-ans = client.user.get_ads_titles()
-print(ans)
+# info['first_name'] = 'Stefanos'
+# info['country_code'] = 'gr'
+#
+# ans = client.user.update_info(info)
+# print(ans)
+#
+# ans = client.user.get_ads_titles()
+# print(ans)
