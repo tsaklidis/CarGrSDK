@@ -1,7 +1,10 @@
 from bs4 import BeautifulSoup
+import re
+
 from endpoints import links
 from sdk.helpers import send_request, get_value_by_id, get_value_by_name, get_text_from_element
 from sdk.errors import HtmlValueNotFound
+from advertise.ads import CustomItem
 
 
 class User:
@@ -55,6 +58,25 @@ class User:
             'postcode': self.postcode
         }
 
+    def get_ads(self):
+        ans = send_request('GET', links.my_ads)
+        soup = BeautifulSoup(ans.text, "html.parser")
+
+        try:
+            titles = soup.find_all("div", {"class": "title font-size-xl"})
+            all_ads = []
+
+            for item in titles:
+                title = item.attrs.get('title')
+                link = item.find_parent('a').get('href')
+                item_id = re.search(r'\d+', link).group()
+                add = CustomItem({'title': title, 'id': item_id})
+                if add not in all_ads:
+                    all_ads.append(add)
+
+            return all_ads
+        except Exception as e:
+            raise HtmlValueNotFound(f'Value not found{e}')
 
     def get_ads_titles(self):
         ans =  send_request('GET', links.my_ads)
@@ -72,7 +94,6 @@ class User:
             return all_titles
         except Exception as e:
             raise HtmlValueNotFound(f'Value not found{e}')
-
 
     def __init__(self):
         self.ans = send_request('GET', links.control_panel)

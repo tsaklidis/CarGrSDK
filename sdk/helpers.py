@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 
+import json
 import logging
 import requests
 
@@ -34,7 +35,7 @@ def send_request(method, url, extra_headers=None, params=None, body=None,
     else:
         raise Exception('Bad request type')
 
-    return ans
+    return json.loads(ans.content) if return_json else ans
 
 
 def get_value_by_id(html, id, html_tag, value=None):
@@ -59,3 +60,8 @@ def get_text_from_element(html, cls, html_tag, id_or_cls, recursive=False):
     soup = BeautifulSoup(html, "html.parser")
     tag = soup.find(html_tag, {id_or_cls: cls})
     return tag.text if tag else None
+
+
+def refresh_item(id):
+    url = f'https://www.car.gr/api/classifieds/{id}/touch/?_tag=web'
+    return send_request('POST', url, return_json=True)
